@@ -13,6 +13,8 @@ const ERRORS = require("./utils/errors").ERROR_CODES;
 //All routes will be define here
 const UserRoutes = require("./routes/userRoute");
 const EventRoutes = require("./routes/eventRoute");
+const AliCloudRoutes  = require("./routes/alicloudRoute");
+
 
 const options = {
   promiseLibrary: require("bluebird"),
@@ -94,6 +96,7 @@ app.get("/", (req, res) => res.status(200).send("Welcome to nodejs"));
 // ROUTES
 app.use("/users", UserRoutes);
 app.use("/events", EventRoutes);
+app.use("/alicloud", AliCloudRoutes);
 
 
 // catch 404 and forward to error handler

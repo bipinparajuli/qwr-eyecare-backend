@@ -1,11 +1,12 @@
 {
-  "name": "mongodb-expressjs-nodejs-boilerplate",
+  "name": "qwr-eyecare-backend",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start:dev": "nodemon ./bin/boot.js"
   },
   "dependencies": {
+    "@alicloud/pop-core": "^1.7.10",
     "ajv": "^5.5.2",
     "aws-sdk": "^2.382.0",
     "azure-storage": "^2.10.3",
