@@ -115,7 +115,7 @@ const authetication = require("../middleware/authentication");
           let result={
             id:UpdateUserDetails._id,
             email:UpdateUserDetails.email,
-            subject:'Account Verification || EdificeVR',
+            subject:'Account Verification || QWR',
             message:`"Hello ${UpdateUserDetails.name} , Here is the OTP to verify your Account : ${UpdateUserDetails.otp}"`
           }
           commonFunctionController.sendMail(result);
@@ -155,7 +155,7 @@ const authetication = require("../middleware/authentication");
           let result={
             id:UpdateUserDetails._id,
             email:UpdateUserDetails.email,
-            subject:'Account Verification || EdificeVR',
+            subject:'Account Verification || QWR',
             message:`"Hello ${UpdateUserDetails.name} , Here is the OTP to verify your Account : ${UpdateUserDetails.otp}"`
           }
           commonFunctionController.sendMail(result);

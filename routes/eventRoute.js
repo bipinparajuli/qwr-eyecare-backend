@@ -10,13 +10,13 @@ const authetication = require("../middleware/authentication");
 
 
 
-router.post("/create-event", [authetication.authenticate], function (req, res, next) {
+router.post("/create-event", function (req, res, next) {
   return Bluebird.try(async () => {
     let response = {
       success: false
     };
     let postData = req.body;
-    postData.user_id = req.user._id;
+    // postData.user_id = req.user._id;
     let saveEvent = await EventController.addEvent(postData);
     if (saveEvent) {
       response.success = true;

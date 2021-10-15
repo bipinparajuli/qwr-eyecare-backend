@@ -12,14 +12,15 @@ const UsersSchema = new Schema({
     email:{
         type:String,
         unique: true,
-        required:true
+        required:false
     },
     name: {
         type: String,
-        required: true
+        required: false
     },
     mobile_number: {
         type: Number,
+        unique: true,
         required: true
     },
     country_code: {
