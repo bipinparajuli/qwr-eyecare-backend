@@ -134,6 +134,78 @@ const authetication = require("../middleware/authentication");
     });
   });
 
+  router.post("/registerorlogin", function (req, res, next) {
+    return Bluebird.try(async() => {
+      let response = {success:false}; 
+      let postData = req.body;
+      // postData.email = postData.email.toLowerCase();
+      // let checkEmailExists = await UserController.CheckFieldValueExist({email:postData.email});
+      // if(checkEmailExists){
+      //   response.success = false;
+      //   response.msg = constants.COMMON_MESSAGES.EMAIL_EXIST;
+      // }else{
+        postData.mobile_number = parseInt(postData.mobile_number);
+        let checkNumberExist = await UserController.CheckFieldValueExist({mobile_number:postData.mobile_number});
+        if(checkNumberExist){
+          console.log("checkNumberExist");
+          console.log(checkNumberExist);
+          console.log("checkNumberExist");
+
+          // response.success = false;
+          // response.msg = constants.COMMON_MESSAGES.NUMBER_EXIST;
+
+          let otp = await otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
+          let updateData = {
+            otp:otp
+          }
+          let UpdateUserDetails = await UserController.updatedUserData(checkNumberExist._id, updateData);
+          if(UpdateUserDetails){
+            //send verification code on text message
+            let sendVerificationCode = await commonFunctionController.sendVerificationCode(UpdateUserDetails);
+            
+            //send verification code on email
+            // let result={
+            //   id:UpdateUserDetails._id,
+            //   email:UpdateUserDetails.email,
+            //   subject:'Account Verification || QWR',
+            //   message:`"Hello ${UpdateUserDetails.name} , Here is the OTP to verify your Account : ${UpdateUserDetails.otp}"`
+            // }
+            // commonFunctionController.sendMail(result);
+            response.success = true;
+            response.msg = "Verification code send successfull";
+            response.data = UpdateUserDetails;
+          }else{
+            response.success = false;
+            response.msg = constants.COMMON_ERROR_MESSAGES.DEFAULT_ERROR;
+          }
+          
+
+        }else{
+          postData.otp = await otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
+          let isUserAdded = await UserController.createNewUser(postData);
+          if(isUserAdded){
+            let sendVerificationCode = await commonFunctionController.sendVerificationCode(postData);
+            // let result={
+            //   id:isUserAdded._id,
+            //   email:isUserAdded.email,
+            //   subject:'Account Verification || QWR',
+            //   message:`"Hello ${postData.name} , Here is the OTP to verify your Account : ${postData.otp}"`
+            // }
+            // commonFunctionController.sendMail(result);
+
+            response.success = true;
+            response.msg = "Verification code send successfull";
+            response.data = isUserAdded;
+          }else{
+            response.success = false;
+            response.msg = constants.COMMON_ERROR_MESSAGES.DEFAULT_ERROR;
+          }
+        }            
+      // }
+      return res.status(200).send(response);
+    });
+  });
+
 
   router.post("/resend-otp", function (req, res, next) {
     return Bluebird.try(async() => {
